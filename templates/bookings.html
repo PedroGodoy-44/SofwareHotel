@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Reservas - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="flex items-center mb-4">
+  <h1 class="text-xl font-semibold">Reservas</h1>
+  <a href="{{ url_for('new_booking') }}" class="ml-auto inline-block px-3 py-2 bg-slate-900 text-white rounded-xl shadow">Nova reserva</a>
+</div>
+<div class="bg-white shadow rounded-2xl overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-100"><tr><th class="p-2 text-left">Período</th><th class="p-2 text-left">Quarto</th><th class="p-2 text-left">Hóspede</th><th class="p-2 text-left">Status</th><th class="p-2 text-right">Total</th><th></th></tr></thead>
+    <tbody>
+      {% for b in bookings %}
+      <tr class="border-t">
+        <td class="p-2">{{ b.check_in.strftime('%d/%m/%Y') }} → {{ b.check_out.strftime('%d/%m/%Y') }}</td>
+        <td class="p-2">{{ b.room.number }}</td>
+        <td class="p-2">{{ b.guest.name }}</td>
+        <td class="p-2">{{ b.status }}</td>
+        <td class="p-2 text-right">R$ {{ '%.2f'|format(b.total_amount) }}</td>
+        <td class="p-2"><a class="underline" href="{{ url_for('booking_detail', booking_id=b.id) }}">Abrir</a></td>
+      </tr>
+      {% else %}
+      <tr><td class="p-2" colspan="6">Sem reservas encontradas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

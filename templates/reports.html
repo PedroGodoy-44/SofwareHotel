@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Relatórios - {{ super() }}{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-semibold mb-4">Relatórios</h1>
+<form method="post" class="bg-white p-4 rounded-2xl shadow grid md:grid-cols-3 gap-3 items-end">
+    <label class="block text-sm">Data inicial
+        <input type="date" name="d1" value="{{ start.strftime('%Y-%m-%d') }}" class="mt-1 px-3 py-2 border rounded-xl w-full">
+    </label>
+    <label class="block text-sm">Data final
+        <input type="date" name="d2" value="{{ end.strftime('%Y-%m-%d') }}" class="mt-1 px-3 py-2 border rounded-xl w-full">
+    </label>
+    <button class="px-3 py-2 bg-slate-900 text-white rounded-xl h-fit">Gerar</button>
+</form>
+<div class="mt-6 grid md:grid-cols-2 gap-4">
+    <div class="p-4 rounded-2xl bg-white shadow">
+        <div class="text-sm opacity-70">Receita no período</div>
+        <div class="text-3xl font-bold">R$ {{ '%.2f'|format(revenue) }}</div>
+    </div>
+    <div class="p-4 rounded-2xl bg-white shadow">
+        <div class="text-sm opacity-70">Taxa de ocupação média</div>
+        <div class="text-3xl font-bold">{{ '%.2f'|format(rate) }}%</div>
+    </div>
+</div>
+{% endblock %}

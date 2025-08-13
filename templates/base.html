@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HotelJT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-50 text-slate-900">
+    <nav class="bg-slate-900 text-white px-4 py-3 flex gap-4 items-center">
+      <a href="{{ url_for('dashboard') }}" class="font-bold">HotelJT</a>
+      <a href="{{ url_for('rooms') }}" class="hover:underline">Quartos</a>
+      <a href="{{ url_for('guests') }}" class="hover:underline">Hóspedes</a>
+      <a href="{{ url_for('bookings') }}" class="hover:underline">Reservas</a>
+      <a href="{{ url_for('reports') }}" class="hover:underline">Relatórios</a>
+      <span class="ml-auto text-sm opacity-80">{{ now.strftime('%d/%m/%Y') }}</span>
+    </nav>
+    <main class="p-4 max-w-6xl mx-auto">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="mb-4">
+            {% for category, m in messages %}
+              {% if category == 'error' %}
+                <div class="p-3 rounded bg-red-100 text-red-900 mb-2">{{ m }}</div>
+              {% else %}
+                <div class="p-3 rounded bg-emerald-100 text-emerald-900 mb-2">{{ m }}</div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {{ content|safe }}
+    </main>
+  </body>
+</html>

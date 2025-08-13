@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Hóspedes - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="flex items-center mb-4">
+  <h1 class="text-xl font-semibold">Hóspedes</h1>
+  <form class="ml-4" method="get"><input name="q" value="{{ q or '' }}" placeholder="Buscar por nome ou documento" class="px-3 py-2 border rounded-xl w-64"></form>
+  <a href="{{ url_for('new_guest') }}" class="ml-auto inline-block px-3 py-2 bg-slate-900 text-white rounded-xl shadow">Novo hóspede</a>
+</div>
+<div class="bg-white shadow rounded-2xl overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-100"><tr><th class="p-2 text-left">Nome</th><th class="p-2 text-left">Documento</th><th class="p-2 text-left">Contato</th><th></th></tr></thead>
+    <tbody>
+      {% for g in guests %}
+      <tr class="border-t">
+        <td class="p-2">{{ g.name }}</td>
+        <td class="p-2">{{ g.document or '-' }}</td>
+        <td class="p-2">{{ g.phone or '-' }} {{ g.email or '' }}</td>
+        <td class="p-2"><a class="underline" href="{{ url_for('edit_guest', guest_id=g.id) }}">Editar</a></td>
+      </tr>
+      {% else %}
+      <tr><td class="p-2" colspan="4">Nenhum hóspede encontrado.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

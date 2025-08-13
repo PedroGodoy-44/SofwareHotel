@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Reserva #{{ b.id }} - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="flex items-center mb-4">
+  <h1 class="text-xl font-semibold">Reserva #{{ b.id }} – Quarto {{ b.room.number }}</h1>
+  <a href="{{ url_for('bookings') }}" class="ml-auto underline">Voltar para Reservas</a>
+</div>
+<div class="bg-white rounded-2xl shadow p-4 grid gap-3">
+  <div class="grid md:grid-cols-4 gap-3">
+    <div><div class="text-sm opacity-60">Hóspede</div><div class="font-semibold">{{ b.guest.name }}</div></div>
+    <div><div class="text-sm opacity-60">Período</div><div class="font-semibold">{{ b.check_in.strftime('%d/%m/%Y') }} → {{ b.check_out.strftime('%d/%m/%Y') }} ({{ b.nights() }} noites)</div></div>
+    <div><div class="text-sm opacity-60">Status</div><div class="font-semibold">{{ b.status }}</div></div>
+    <div><div class="text-sm opacity-60">Total</div><div class="font-semibold">R$ {{ '%.2f'|format(b.total_amount) }}</div></div>
+  </div>
+  <div class="flex gap-2 pt-3 border-t">
+    {% if b.status == 'reservado' %}
+      <a href="{{ url_for('booking_checkin', booking_id=b.id) }}" class="px-3 py-2 bg-blue-600 text-white rounded-xl">Fazer check-in</a>
+      <a href="{{ url_for('booking_cancel', booking_id=b.id) }}" class="px-3 py-2 bg-red-600 text-white rounded-xl">Cancelar</a>
+    {% elif b.status == 'checkin' %}
+      <a href="{{ url_for('booking_checkout', booking_id=b.id) }}" class="px-3 py-2 bg-emerald-600 text-white rounded-xl">Fazer check-out</a>
+    {% endif %}
+    <a href="{{ url_for('edit_booking', booking_id=b.id) }}" class="px-3 py-2 bg-slate-900 text-white rounded-xl">Editar</a>
+  </div>
+  {% if b.notes %}
+  <div class="pt-3 border-t">
+    <div class="text-sm opacity-60">Observações</div>
+    <div>{{ b.notes }}</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

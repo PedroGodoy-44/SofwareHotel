@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ super() }}{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-semibold mb-4">{{ title }}</h1>
+<form method="post" class="bg-white p-4 rounded-2xl shadow grid gap-3 md:w-2/3">
+  <label class="block text-sm">Quarto
+    <select name="room_id" class="mt-1 px-3 py-2 border rounded-xl w-full">
+      {% for r in rooms %}
+        {% set selected_room = booking.room_id if booking else pre_room_id %}
+        <option value="{{ r.id }}" {% if selected_room == r.id %}selected{% endif %}>
+          {{ r.number }} ({{ r.room_type }}) – R$ {{ '%.2f'|format(r.rate) }}
+        </option>
+      {% endfor %}
+    </select>
+  </label>
+  <label class="block text-sm">Hóspede
+    <select name="guest_id" class="mt-1 px-3 py-2 border rounded-xl w-full">
+      {% for g in guests %}
+        <option value="{{ g.id }}" {% if booking and booking.guest_id == g.id %}selected{% endif %}>
+          {{ g.name }}{% if g.document %} ({{ g.document }}){% endif %}
+        </option>
+      {% endfor %}
+    </select>
+  </label>
+  <div class="grid md:grid-cols-2 gap-3">
+    <label class="block text-sm">Check-in
+      <input type="date" name="check_in" value="{{ (booking.check_in if booking else now).strftime('%Y-%m-%d') }}" class="mt-1 px-3 py-2 border rounded-xl w-full">
+    </label>
+    <label class="block text-sm">Check-out
+      <input type="date" name="check_out" value="{{ (booking.check_out if booking else now + timedelta(days=1)).strftime('%Y-%m-%d') }}" class="mt-1 px-3 py-2 border rounded-xl w-full">
+    </label>
+  </div>
+  <textarea name="notes" placeholder="Observações da reserva..." class="px-3 py-2 border rounded-xl">{{ booking.notes or '' }}</textarea>
+  <div class="flex gap-4">
+    <button class="px-4 py-2 bg-slate-900 text-white rounded-xl">Salvar Reserva</button>
+    <a href="{{ url_for('bookings') }}" class="px-4 py-2 text-slate-700 rounded-xl">Cancelar</a>
+  </div>
+</form>
+<p class="text-sm mt-3">Precisa cadastrar um novo hóspede? <a class="underline" href="{{ url_for('new_guest') }}">Clique aqui</a>.</p>
+{% endblock %}

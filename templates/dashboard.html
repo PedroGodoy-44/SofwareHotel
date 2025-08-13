@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="grid md:grid-cols-3 gap-4">
+  <div class="p-4 rounded-2xl bg-white shadow">
+    <div class="text-sm opacity-70">Ocupação hoje</div>
+    <div class="text-3xl font-bold">{{ occupied }}/{{ total_rooms }}</div>
+  </div>
+  <div class="p-4 rounded-2xl bg-white shadow">
+    <div class="text-sm opacity-70">Receita do mês</div>
+    <div class="text-3xl font-bold">R$ {{ '%.2f'|format(revenue) }}</div>
+  </div>
+</div>
+
+<h2 class="mt-8 mb-2 font-semibold text-lg">Próximos check-ins</h2>
+<div class="bg-white shadow rounded-2xl overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-100">
+      <tr>
+        <th class="p-2 text-left">Data</th>
+        <th class="p-2 text-left">Quarto</th>
+        <th class="p-2 text-left">Hóspede</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in upcoming %}
+      <tr class="border-t">
+        <td class="p-2">{{ b.check_in.strftime('%d/%m/%Y') }}</td>
+        <td class="p-2">{{ b.room.number }}</td>
+        <td class="p-2">{{ b.guest.name }}</td>
+        <td class="p-2"><a class="underline" href="{{ url_for('booking_detail', booking_id=b.id) }}">Abrir</a></td>
+      </tr>
+      {% else %}
+      <tr><td class="p-2" colspan="4">Sem reservas futuras.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

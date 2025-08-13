@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ super() }}{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-semibold mb-4">{{ title }}</h1>
+<form method="post" class="bg-white p-4 rounded-2xl shadow grid gap-3 md:w-2/3">
+  <label class="block">
+      <span class="text-sm">Nome completo</span>
+      <input name="name" value="{{ guest.name if guest else '' }}" required placeholder="Nome completo do hóspede" class="mt-1 px-3 py-2 border rounded-xl w-full">
+  </label>
+  <label class="block">
+      <span class="text-sm">Documento</span>
+      <input name="document" value="{{ guest.document if guest else '' }}" placeholder="CPF, RG ou Passaporte" class="mt-1 px-3 py-2 border rounded-xl w-full">
+  </label>
+  <label class="block">
+      <span class="text-sm">Telefone</span>
+      <input name="phone" value="{{ guest.phone if guest else '' }}" placeholder="(XX) XXXXX-XXXX" class="mt-1 px-3 py-2 border rounded-xl w-full">
+  </label>
+  <label class="block">
+      <span class="text-sm">E-mail</span>
+      <input name="email" type="email" value="{{ guest.email if guest else '' }}" placeholder="email@exemplo.com" class="mt-1 px-3 py-2 border rounded-xl w-full">
+  </label>
+  <div class="flex gap-4">
+    <button class="px-4 py-2 bg-slate-900 text-white rounded-xl">Salvar</button>
+    <a href="{{ url_for('guests') }}" class="px-4 py-2 text-slate-700 rounded-xl">Cancelar</a>
+  </div>
+</form>
+{% endblock %}
